@@ -5,6 +5,7 @@ import type { Session } from "next-auth";
 import LoginButton from "@/components/auth/LoginButton";
 import UserNavigation from "@/components/auth/UserNavigation";
 import { Button } from "@/components/ui/button";
+import { useSession } from "next-auth/react";
 
 type NavigationProps = {
   session: Session | null;
@@ -12,6 +13,7 @@ type NavigationProps = {
 
 const Navigation = (props: NavigationProps) => {
   const { session } = props;
+
   return (
     <header className="shadoe-lg shadow-gray-100 mb-10">
       <div className="container mx-auto flex max-w-screen-md items-center justify-between px-2 py-3">

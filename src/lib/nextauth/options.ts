@@ -13,6 +13,7 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
+      accessToken: string | null | undefined;
     } & DefaultSession["user"];
   }
 }
@@ -20,6 +21,7 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   interface JWT {
     id: string;
+    accessToken: string | null | undefined;
   }
 }
 
@@ -44,17 +46,28 @@ export const nextAuthOptions: NextAuthOptions = {
   //// JWT トークンとセッションのコールバック関数を定義
   callbacks: {
     jwt: async ({ token }) => {
-      //データベース上のemailとJWTトークンのemailが一致するデータをuserに格納
+      //userテーブルのemailとJWTトークンのemailが一致するデータをuserに格納
       const user = await prisma.user.findFirst({
         where: {
           email: token?.email,
         },
       });
+
+      //accountテーブルのuserIdとuserテーブルのuserIdが一致するデータをaccountに格納
+      const account = await prisma.account.findFirst({
+        where: {
+          userId: user?.id,
+        },
+      });
+
       //もしuserに値が入っていたら
       if (user) {
-        //JWTトークンにuser.idを格納
+        //トークンにuser.idを格納
         token.id = user.id;
+        //トークンにaccountのccessTokenを格納
+        token.accessToken = account?.access_token;
       }
+
       //JWTトークンを返す
       return token;
     },
@@ -66,7 +79,9 @@ export const nextAuthOptions: NextAuthOptions = {
         session.user.name = token.name;
         session.user.email = token.email;
         session.user.image = token.picture;
+        session.user.accessToken = token.accessToken;
       }
+
       //返却
       return session;
     },
@@ -78,6 +93,7 @@ export const nextAuthOptions: NextAuthOptions = {
   },
 };
 
+//サーバーサイドでのセッション呼び出しを関数化
 export const getAuthSession = () => {
   return getServerSession(nextAuthOptions);
 };

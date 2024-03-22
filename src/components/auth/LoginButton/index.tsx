@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
+import { getAuthSession } from "@/lib/nextauth/options";
 
 //ログインボタン
 const LoginButton = () => {
