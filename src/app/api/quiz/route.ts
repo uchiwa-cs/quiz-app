@@ -94,10 +94,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     });
 
     //トークン数チェック
-    if (response.usage) {
-      //入力と出力の合計トークン数
-      console.log(response.usage.total_tokens);
-    }
+    console.log(response.usage?.total_tokens);
 
     //メッセージ取得
     //回答メッセージ(choises)の０番目を取得
