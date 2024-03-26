@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Quiz, Question } from "@prisma/client";
+import type { Quiz, Question } from "@prisma/client";
 import {
   Card,
   CardHeader,

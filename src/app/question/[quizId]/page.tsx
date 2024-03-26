@@ -1,7 +1,7 @@
 import { getAuthSession } from "@/lib/nextauth/options";
 import { redirect } from "next/navigation";
 import getQuizById from "@/actions/getQuizById";
-import Question from "@/components/question/Question";
+import Question from "@/components/question/Questions";
 
 type Props = {
   params: {
